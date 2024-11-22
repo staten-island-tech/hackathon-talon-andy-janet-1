@@ -223,11 +223,6 @@ blink_state = True
 show_start_screen()
 game_loop()
 
-<<<<<<< Updated upstream
 # Quit Pygame
 pygame.quit()
 quit()
-=======
-import os
-print("Current working directory:", os.getcwd())
->>>>>>> Stashed changes

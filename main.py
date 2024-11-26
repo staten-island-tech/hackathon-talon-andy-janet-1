@@ -1,4 +1,4 @@
-import pygame
+import pygame 
 import random
 import time
 
@@ -21,7 +21,7 @@ BLACK = (0, 0, 0)
 
 # Game Variables
 note_speed = 7  # Speed of the notes
-note_height = 80
+note_height = 160  # Increased the height of the blocks
 score = 0
 misses = 0
 

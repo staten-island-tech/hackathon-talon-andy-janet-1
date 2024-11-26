@@ -50,6 +50,9 @@ blue_sound = pygame.mixer.Sound("blue_sound.wav")
 orange_sound = pygame.mixer.Sound("orange_sound.wav") 
 green_sound = pygame.mixer.Sound("green_sound.wav") 
 
+# Load background music (make sure this file exists)
+pygame.mixer.music.load("megalovania.mp3")  # Replace with the path to your music file
+
 # Define the Note class
 class Note:
     def __init__(self, key, y, color, sound):
@@ -152,7 +155,16 @@ def game_loop():
         'orange': ORANGE,
         'green': GREEN
     }
+
+    # Track next random times for notes
+    next_red_time = random.uniform(0.5, 2)
+    next_blue_time = random.uniform(1, 3)
+    next_orange_time = random.uniform(1.5, 4)
+    next_green_time = random.uniform(1.5, 2)
     
+    # Play background music in a loop
+    pygame.mixer.music.play(loops=-1, start=0.0)
+
     while running:
         screen.fill(BLACK)  # Fill screen with black to clear it
         draw_pattern()  # Draw the background pattern
@@ -174,22 +186,28 @@ def game_loop():
                 else:
                     misses += 1  # Missed the note
 
-        # Generate notes at specific intervals
-        if time.time() - last_red_time > 2:
-            notes.append(Note('d', 0, RED, red_sound))  # Red block every 2 seconds
-            last_red_time = time.time()
+        # Generate notes at random intervals
+        current_time = time.time()
 
-        if time.time() - last_blue_time > 3:
-            notes.append(Note('f', 0, BLUE, blue_sound))  # Blue block every 3 seconds
-            last_blue_time = time.time()
+        if current_time - last_red_time > next_red_time:
+            notes.append(Note('d', 0, RED, red_sound))  # Red block
+            last_red_time = current_time
+            next_red_time = random.uniform(0.5, 2)  # Set new random time for next Red note
 
-        if time.time() - last_orange_time > 4:
-            notes.append(Note('j', 0, ORANGE, orange_sound))  # Orange block every 4 seconds
-            last_orange_time = time.time()
+        if current_time - last_blue_time > next_blue_time:
+            notes.append(Note('f', 0, BLUE, blue_sound))  # Blue block
+            last_blue_time = current_time
+            next_blue_time = random.uniform(1, 3)  # Set new random time for next Blue note
 
-        if time.time() - last_green_time > 6:
-            notes.append(Note('k', 0, GREEN, green_sound))  # Green block every 6 seconds
-            last_green_time = time.time()
+        if current_time - last_orange_time > next_orange_time:
+            notes.append(Note('j', 0, ORANGE, orange_sound))  # Orange block
+            last_orange_time = current_time
+            next_orange_time = random.uniform(1.5, 4)  # Set new random time for next Orange note
+
+        if current_time - last_green_time > next_green_time:
+            notes.append(Note('k', 0, GREEN, green_sound))  # Green block
+            last_green_time = current_time
+            next_green_time = random.uniform(1.5, 2)  # Set new random time for next Green note
 
         # Move and draw notes
         for note in notes[:]:
